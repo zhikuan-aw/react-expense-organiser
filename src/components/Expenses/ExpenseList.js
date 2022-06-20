@@ -12,16 +12,26 @@ export default function ExpenseList(props) {
 		setFilteredYear(dateSelected);
 	};
 
-	const expenseList = expenses.map((expense, key) => {
-		return (
-			<ExpenseItem
-				key={key}
-				title={expense.title}
-				amount={expense.amount}
-				date={expense.date}
-			/>
-		);
+	const filteredExpenses = expenses.filter((expense) => {
+		return expense.date.getFullYear().toString() === filteredYear;
 	});
+
+	let expenseList = <p className="expenses-list__fallback">No expense found</p>;
+
+	if (filteredExpenses.length > 0) {
+		const itemsInList = filteredExpenses.map((expense) => {
+			return (
+				<ExpenseItem
+					key={expense.id}
+					title={expense.title}
+					amount={expense.amount}
+					date={expense.date}
+				/>
+			);
+		});
+
+		expenseList = <ul className="expenses-list">{itemsInList}</ul>;
+	}
 
 	return (
 		<div>
